@@ -25,7 +25,7 @@ class Store extends Model
 
     public static function getStoreUrl(): string
     {
-        $slug = optional(filament()->getTenant())->slug;
+        $slug = filament()->getTenant()?->slug;
 
         return $slug ? 'http://localhost:8000/' . $slug : '';
     }
