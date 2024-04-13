@@ -27,6 +27,6 @@ class Store extends Model
     {
         $slug = filament()->getTenant()?->slug;
 
-        return $slug ? 'http://localhost:8000/' . $slug : '';
+        return $slug ? url('/') . '/' . $slug : '';
     }
 }
