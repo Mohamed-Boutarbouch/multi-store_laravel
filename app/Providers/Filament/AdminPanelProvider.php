@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Tenancy\RegisterStore;
 use App\Filament\Pages\Tenancy\EditStoreProfile;
+use App\Http\Middleware\ApplyTenantScopes;
 use App\Models\Store;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -34,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -58,19 +60,20 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->tenant(Store::class, ownershipRelationship: 'store', slugAttribute: 'slug')
-            ->tenantRegistration(RegisterStore::class)
-            ->tenantProfile(EditStoreProfile::class)
             ->profile()
             ->userMenuItems([
-                'profile' => MenuItem::make()->label('Edit profile'),
-                'logout' => MenuItem::make()->label('Log out'),
-            ])
-            ->sidebarCollapsibleOnDesktop()->userMenuItems([
-                MenuItem::make()
+                'view' => MenuItem::make()
                     ->label('View Store')
                     ->url(fn (): string => Store::getStoreUrl(), shouldOpenInNewTab: true)
                     ->icon('heroicon-o-building-storefront'),
-            ]);
+                'profile' => MenuItem::make()->label('Edit profile'),
+                'logout' => MenuItem::make()->label('Log out'),
+            ])
+            ->tenant(Store::class, ownershipRelationship: 'store')
+            ->tenantRegistration(RegisterStore::class)
+            ->tenantProfile(EditStoreProfile::class)
+            ->tenantMiddleware([
+                ApplyTenantScopes::class,
+            ], isPersistent: true);
     }
 }

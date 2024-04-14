@@ -21,8 +21,8 @@ class StoreSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Store 2',
-                'slug' => 'store-2',
+                'name' => 'Store 3',
+                'slug' => 'store-3',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
