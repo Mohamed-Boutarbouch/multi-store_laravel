@@ -3,6 +3,7 @@
 namespace App\Filament\Pages\Tenancy;
 
 use App\Models\Store;
+use App\Rules\UniqueStoreSlugForUser;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
@@ -19,7 +20,8 @@ class RegisterStore extends RegisterTenant
         return $form
             ->schema([
                 TextInput::make('name'),
-                TextInput::make('slug'),
+                TextInput::make('slug')
+                    ->rules([new UniqueStoreSlugForUser(auth()->user())]),
             ]);
     }
 

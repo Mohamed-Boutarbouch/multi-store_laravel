@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages\Tenancy;
 
+use App\Rules\UniqueStoreSlugForUser;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\EditTenantProfile;
@@ -19,6 +20,7 @@ class EditStoreProfile extends EditTenantProfile
             ->schema([
                 TextInput::make('name'),
                 TextInput::make('slug')
+                    ->rules([new UniqueStoreSlugForUser(auth()->user())]),
             ]);
     }
 }

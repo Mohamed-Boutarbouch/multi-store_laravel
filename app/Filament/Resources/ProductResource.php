@@ -26,13 +26,13 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('nom')
-                    ->required()
-                    ->maxLength(255),
                 TextInput::make('codebarre')
                     ->required()
                     ->integer()
                     ->minValue(1),
+                TextInput::make('nom')
+                    ->required()
+                    ->maxLength(255),
                 TextInput::make('prix_ht')
                     ->required()
                     ->numeric()

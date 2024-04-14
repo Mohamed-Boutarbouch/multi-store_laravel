@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('codebarre');
+            $table->string('codebarre', 50);
             $table->string('nom');
-            $table->double('prix_ht', 10, 2);
-            $table->double('tva', 3, 2);
             $table->text('description');
+            $table->decimal('prix_ht', 10, 2);
+            $table->decimal('tva', 5, 2);
             $table->integer('quantite');
             $table->foreignId('store_id')
                 ->constrained()

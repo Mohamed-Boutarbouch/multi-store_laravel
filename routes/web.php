@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
 use App\Models\Store;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,17 +21,30 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
 
-Route::get('{store:slug}', function (Store $store) {
+// Route::get('{store:slug}', function (Store $store) {
+//     return Inertia::render('Products', [
+//         'products' => Product::where('store_id', $store->id)->get()
+//     ]);
+// });
+
+Route::get('/{user:username}/{store:slug}', function (User $user, Store $store) {
+    $store = $user->stores()
+        ->where('slug', $store->slug)
+        ->firstOrFail();
+
     return Inertia::render('Products', [
-        'products' => Product::where('store_id', $store->id)->get()
+        'products' => $store->products()->get()
     ]);
+});
+
+Route::get('/gg', function () {
+    $store = 'gg';
+    dd($store);
 });
 
 Route::get('/dashboard', function () {
