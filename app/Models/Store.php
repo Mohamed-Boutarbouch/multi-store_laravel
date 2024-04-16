@@ -47,6 +47,6 @@ class Store extends Model implements HasCurrentTenantLabel
     {
         $slug = filament()->getTenant()?->slug;
 
-        return $slug ? url('/') . '/' . auth()->user()->username . '/' . $slug : '';
+        return $slug ? '/' . auth()->user()->username . '/' . $slug : '';
     }
 }
