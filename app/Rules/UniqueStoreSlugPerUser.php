@@ -6,7 +6,7 @@ use App\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class UniqueStoreSlugForUser implements ValidationRule
+class UniqueStoreSlugPerUser implements ValidationRule
 {
     public function __construct(protected User $user)
     {
