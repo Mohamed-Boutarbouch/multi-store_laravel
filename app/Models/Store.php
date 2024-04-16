@@ -2,15 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Filament\Models\Contracts\HasCurrentTenantLabel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Store extends Model implements HasCurrentTenantLabel
 {
     use HasFactory;
+
+    protected $keyType = 'string';
+
+    public $incrementing = false;
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (Model $model) {
+            $model->id = Str::ulid();
+        });
+    }
 
     protected $fillable = ['name', 'slug'];
 
