@@ -65,7 +65,8 @@ class AdminPanelProvider extends PanelProvider
                 'view' => MenuItem::make()
                     ->label('View Store')
                     ->url(fn (): string => Store::getStoreUrl(), shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-building-storefront'),
+                    ->icon('heroicon-o-building-storefront')
+                    ->hidden(fn (): bool => empty(Store::getStoreUrl())),
                 'profile' => MenuItem::make()->label('Edit profile'),
                 'logout' => MenuItem::make()->label('Log out'),
             ])
