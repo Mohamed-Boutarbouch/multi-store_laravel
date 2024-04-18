@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\Role;
+use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Collection;
 
-class User extends Authenticatable implements HasTenants
+class User extends Authenticatable implements HasTenants, FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -63,5 +65,18 @@ class User extends Authenticatable implements HasTenants
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->stores()->whereKey($tenant)->exists();
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($panel->getId() === 'manager') {
+            return $this->role === Role::MANAGER->value;
+        }
+
+        if ($panel->getId() === 'admin') {
+            return $this->role === Role::ADMIN->value;
+        }
+
+        return true;
     }
 }
